@@ -1,0 +1,117 @@
+create database clgDB3;
+
+use clgDB3;
+
+create table Student (
+    StudentID int primary key auto_increment,
+    Name varchar(100) not null,
+    Email varchar(100) unique,
+    Address varchar(100)
+);
+
+insert into Student (Name, Email, Address)
+values ('om', 'om@gmail.com', 'Shirdi'),
+       ('Amit', 'amit@gmail.com', 'Pune');
+
+
+select * from Student;
+
+
+
+
+create table Instructor (
+    InstructorID int primary key auto_increment,
+    Name varchar(100),
+    Department varchar(100)
+);
+
+insert into Instructor (Name, Department)
+values ('Dr. Patil', 'Computer Science');
+
+select * from Instructor;
+
+
+
+create table Course (
+    CourseID int primary key auto_increment,
+    CourseName varchar(100),
+    InstructorID int,
+    foreign key (InstructorID) references Instructor(InstructorID)
+);
+
+insert into Course (CourseName, InstructorID)
+values ('DBMS',1),
+       ('Python',1);
+
+select * from Course;
+
+
+
+create table Enrollment (
+    EnrollmentID int primary key auto_increment,
+    StudentID int,
+    CourseID int,
+    foreign key (StudentID) references Student(StudentID),
+    foreign key (CourseID) references Course(CourseID)
+);
+
+insert into Enrollment (StudentID, CourseID)
+values (1,1),
+       (1,2),
+       (2,1);
+
+select * from Enrollment;
+
+
+
+create view StudentCourseView as
+select 
+    s.StudentID
+    s.Name as student_name,
+    c.CourseName
+from Enrollment e
+join Student s on e.StudentID = s.StudentID
+join Course c on e.CourseID = s.StudentID;
+
+
+create view StudentCourseView as
+select 
+    s.StudentID,
+    s.Name as student_name,
+    c.CourseName
+from Enrollment e
+join Student s on e.StudentID = s.StudentID
+join Course c on e.CourseID = c.CourseID;
+
+select * from StudentCourseView;
+
+
+
+update StudentCourseView
+set student_name = 'om '
+where StudentID = 1;
+
+select * from Student;
+
+
+
+
+
+delete from StudentCourseView
+where StudentID = 2;
+
+select * from Student;
+
+
+
+
+create index idx_student_name on Student(Name);
+
+create index idx_course_name on Course(CourseName);
+
+show index from Student;
+
+
+
+explain select * from Student where Name = 'om';
+

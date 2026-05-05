@@ -1,0 +1,35 @@
+use clgDB
+
+db.createCollection("Users")
+
+db.Users.insertOne({
+    Name: "Om",
+    Email: "om@gmail.com",
+    Age: 20,
+    City: "Shirdi"
+})
+
+db.Users.insertMany([
+    { Name: "Amit", Email: "amit@gmail.com", Age: 22, City: "Pune" },
+    { Name: "Neha", Email: "neha@gmail.com", Age: 19, City: "Nashik" }
+])
+
+db.Users.find()
+
+db.Users.find({ Name: "Om" })
+
+db.Users.updateOne(
+    { Name: "Om" },
+    { $set: { Age: 21 } }
+)
+
+db.Users.updateMany(
+    { City: "Pune" },
+    { $set: { City: "Mumbai" } }
+)
+
+db.Users.deleteOne({ Name: "Neha" })
+
+db.Users.deleteMany({ City: "Mumbai" })
+
+db.Users.find()

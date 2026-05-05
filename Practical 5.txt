@@ -1,0 +1,97 @@
+create database clgDB;
+
+use clgDB;
+
+create table Product (
+    ProductID int primary key auto_increment,
+    ProductName varchar(100),
+    Price int
+);
+
+insert into Product (ProductName, Price)
+values ('Laptop',50000),
+       ('Mobile',20000),
+       ('Headphones',2000);
+
+select * from Product;
+
+create table Sales (
+    SaleID int primary key auto_increment,
+    ProductID int,
+    Quantity int,
+    foreign key (ProductID) references Product(ProductID)
+);
+
+insert into Sales (ProductID, Quantity)
+values (1,2),
+       (2,3);
+
+select * from Sales;
+
+delimiter $$
+
+create procedure AddSale(
+    in p_ProductID int,
+    in p_Quantity int
+)
+begin
+    insert into Sales (ProductID, Quantity)
+    values (p_ProductID, p_Quantity)
+end $$
+
+delimiter ;
+
+delimiter $$
+
+create procedure AddSale(
+    in p_ProductID int,
+    in p_Quantity int
+)
+begin
+    insert into Sales (ProductID, Quantity)
+    values (p_ProductID, p_Quantity);
+end $$
+
+delimiter ;
+
+call AddSale(1,1);
+
+select * from Sales;
+
+delimiter $$
+
+create function TotalSales()
+returns int
+deterministic
+begin
+    declare total int;
+
+    select sum(s.Quantity * p.Price)
+    into total
+    from Sales s
+    join Product p on s.ProductID = p.ProductID;
+
+    return total;
+end $$
+
+delimiter ;
+
+delimiter $$
+
+create function TotalSales()
+returns int
+deterministic
+begin
+    declare total int;
+
+    select sum(s.Quantity * p.Price)
+    into total
+    from Sales s
+    join Product p on s.ProductID = p.ProductID;
+
+    return total;
+end $$
+
+delimiter ;
+
+select TotalSales();

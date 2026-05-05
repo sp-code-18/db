@@ -1,0 +1,90 @@
+create database clgDB2;
+
+
+use clgDB2;
+
+
+
+create table Student (
+    StudentID int primary key auto_increment,
+    Name varchar(100) not null,
+    Email varchar(100) unique,
+    Address varchar(100)
+);
+
+
+insert into Student (Name, Email, Age, Address)
+values ('om', 'om@gmail.com', 20, 'Shirdi');
+
+
+insert into Student (Name, Email, Address)
+values ('om', 'sawan@gmail.com', 'Shirdi'),
+       ('Amit', 'amit@gmail.com', 'Pune');
+
+
+select * from Student;
+
+
+create table Instructor (
+    InstructorID int primary key auto_increment,
+    Name varchar(100) not null,
+    Email varchar(100) unique,
+    Department varchar(100)
+);
+
+
+insert into Instructor (Name, Email, Department)
+values ('Dr. Patil', 'patil@gmail.com', 'Computer Science');
+
+
+select * from Instructor;
+
+
+create table Course (
+    CourseID int primary key auto_increment,
+    CourseName varchar(100) not null,
+    Credits int check (Credits > 0),
+    InstructorID int,
+    foreign key (InstructorID) references Instructor(InstructorID)
+        on delete set null
+        on update cascade
+);
+
+
+insert into Course (CourseName, Credits, InstructorID)
+values ('DBMS', 4, 1);
+
+
+select * from Course;
+
+
+create table Enrollment (
+    EnrollmentID int primary key auto_increment,
+    StudentID int
+    CourseID int,
+    EnrollmentDate date,
+    foreign key (StudentID) references Student(StudentID),
+    foreign key (CourseID) references Course(CourseID)
+);
+
+
+create table Enrollment (
+    EnrollmentID int primary key auto_increment,
+    StudentID int,
+    CourseID int,
+    EnrollmentDate date,
+    foreign key (StudentID) references Student(StudentID) on delete cascade,
+    foreign key (CourseID) references Course(CourseID) on delete cascade
+);
+
+
+insert into Enrollment (StudentID, CourseID)
+values (5,1);
+
+
+insert into Enrollment (StudentID, CourseID)
+values (1,1),
+       (2,1);
+
+
+select * from Enrollment;

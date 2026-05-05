@@ -1,0 +1,60 @@
+create database clgDB;
+use clgDB;
+
+create table Customer (
+    CustomerID int primary key auto_increment,
+    Name varchar(100),
+    Email varchar(100)
+);
+
+insert into Customer (Name, Email)
+values ('om','om@gmail.com'),
+       ('Raj','amit@gmail.com'),
+       ('kp','sj@gmail.com');
+
+select * from Customer;
+
+create table Orders (
+    OrderID int primary key auto_increment,
+    CustomerID int,
+    ProductName varchar(100),
+    foreign key (CustomerID) references Customer(CustomerID)
+);
+
+
+insert into Orders (CustomerID, ProductName)
+values (1,'Laptop'),
+       (1,'Mobile'),
+       (2,'Tablet');
+
+
+select * from Orders;
+
+
+select c.Name, o.ProductName
+from Customer c
+inner join Orders o on c.CustomerID = o.CustomerID;
+
+
+select c.Name, o.ProductName
+from Customer c
+left join Orders o on c.CustomerID = o.CustomerID;
+
+
+select c.Name, o.ProductName
+from Customer c
+right join Orders o on c.CustomerID = o.CustomerID;
+
+
+select c.Name, o.ProductName
+from Customer c
+full join Orders o on c.CustomerID = o.CustomerID;
+
+
+select c.Name, o.ProductName
+from Customer c
+left join Orders o on c.CustomerID = o.CustomerID
+union
+select c.Name, o.ProductName
+from Customer c
+right join Orders o on c.CustomerID = o.CustomerID;

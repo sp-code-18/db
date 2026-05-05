@@ -1,0 +1,94 @@
+create database clgDB;
+use clgDB;
+
+create table Student (
+    StudentID int primary key auto_increment,
+    Name varchar(100) not null,
+    Email varchar(100) unique,
+    Address varchar(100)
+);
+
+insert into Student (Name, Email, Address)
+values ('om', 'om@gmail.com', 'Shirdi'),
+       ('Amit', 'amit@gmail.com', 'Pune'),
+       ('Neha', 'neha@gmail.com', 'Nashik');
+
+alter table Student add Age int;
+
+update Student set Age = 20 where StudentID = 1;
+update Student set Age = 22 where StudentID = 2;
+update Student set Age = 19 where StudentID = 3;
+
+select * from Student;
+
+create table Instructor (
+    InstructorID int primary key auto_increment,
+    Name varchar(100),
+    Department varchar(100)
+);
+
+insert into Instructor (Name, Department)
+values ('Patil Sir', 'Computer Science'),
+       ('Kokate sir', 'IT');
+
+select * from Instructor;
+
+create table Course (
+    CourseID int primary key auto_increment,
+    CourseName varchar(100),
+    Credits int,
+    InstructorID int,
+    foreign key (InstructorID) references Instructor(InstructorID)
+);
+
+insert into Course (CourseName, Credits, InstructorID)
+values ('DBMS',4,1),
+       ('Python',3,2);
+
+select * from Course;
+
+create table Enrollment (
+    EnrollmentID int primary key auto_increment,
+    StudentID int,
+    CourseID int,
+    foreign key (StudentID) references Student(StudentID),
+    foreign key (CourseID) references Course(CourseID)
+);
+
+insert into Enrollment (StudentID, CourseID)
+values (1,1),
+       (1,2),
+       (2,1);
+
+select * from Enrollment;
+
+select Name from Student
+where StudentID in (
+    select StudentID from Enrollment
+    where CourseID = (
+        select CourseID from Course where CourseName = 'DBMS'
+    )
+);
+
+
+select Name from Student
+where StudentID in (
+    select StudentID from Enrollment
+    where CourseID in (
+        select CourseID from Course where CourseName = 'DBMS'
+    )
+);
+
+
+
+select Name, Age from Student
+where Age > (
+    select avg(Agee) from Student
+);
+
+
+
+select Name, Age from Student
+where Age > (
+    select avg(Age) from Student
+);

@@ -1,0 +1,55 @@
+create database clgDB;
+use clgDB;
+
+create table Employee (
+    EmpID int primary key auto_increment,
+    Name varchar(100),
+    Department varchar(50),
+    Salary int
+);
+
+insert into Employee (Name, Department, Salary)
+values ('Om','IT',20000),
+       ('Amit','HR',25000),
+       ('Neha','IT',30000);
+
+select * from Employee;
+
+delimiter //
+
+create procedure UpdateSalary()
+begin
+    declare done int default 0;
+    declare v_EmpID int;
+    declare v_Department varchar(50);
+
+    declare emp_cursor cursor for 
+        select EmpID, Department from Employee;
+
+    declare continue handler for not found set done = 1;
+
+    open emp_cursor;
+
+    read_loop: loop
+        fetch emp_cursor into v_EmpID, v_Department;
+
+        if done = 1 then
+            leave read_loop;
+        end if;
+
+        if v_Department = 'IT' then
+            update Employee
+            set Salary = Salary * 1.10
+            where EmpID = v_EmpID;
+        end if;
+
+    end loop;
+
+    close emp_cursor;
+end //
+
+delimiter ;
+
+call UpdateSalary();
+
+select * from Employee;
