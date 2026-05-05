@@ -28,7 +28,7 @@ values (1,2),
 
 select * from Sales;
 
-delimiter $$
+delimiter //
 
 create procedure AddSale(
     in p_ProductID int,
@@ -41,7 +41,7 @@ end $$
 
 delimiter ;
 
-delimiter $$
+delimiter //
 
 create procedure AddSale(
     in p_ProductID int,
@@ -50,7 +50,7 @@ create procedure AddSale(
 begin
     insert into Sales (ProductID, Quantity)
     values (p_ProductID, p_Quantity);
-end $$
+end //
 
 delimiter ;
 
@@ -58,7 +58,7 @@ call AddSale(1,1);
 
 select * from Sales;
 
-delimiter $$
+delimiter //
 
 create function TotalSales()
 returns int
@@ -72,11 +72,11 @@ begin
     join Product p on s.ProductID = p.ProductID;
 
     return total;
-end $$
+end //
 
 delimiter ;
 
-delimiter $$
+delimiter //
 
 create function TotalSales()
 returns int
@@ -90,7 +90,7 @@ begin
     join Product p on s.ProductID = p.ProductID;
 
     return total;
-end $$
+end //
 
 delimiter ;
 
